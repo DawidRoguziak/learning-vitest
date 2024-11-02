@@ -1,11 +1,18 @@
 import { mount } from '@vue/test-utils'
 import WordleBoard from './WordleBoard.vue'
 import {LOST_MESSAGE, WIN_MESSAGE} from "@/constants";
+import {beforeEach} from "vitest";
 
 describe('HelloWorld', () => {
-  it('should show a victory message after user match word of the day', async () => {
-    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
+  let wrapper: ReturnType<typeof mount>;
+  let wordOfTheDay: string;
 
+  beforeEach(() => {
+    wordOfTheDay= "TESTS"
+    wrapper = mount(WordleBoard, {props: {wordOfTheDay}})
+  })
+
+  it('should show a victory message after user match word of the day', async () => {
     const gussInput = wrapper.find<HTMLInputElement>('input[type=text]')
     await gussInput.setValue("TESTS")
     await gussInput.trigger('keydown.enter')
@@ -14,8 +21,6 @@ describe('HelloWorld', () => {
   });
 
   test("should show a lose message if user is incorrect and is game over", async () => {
-    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
-
     const gussInput = wrapper.find<HTMLInputElement>('input[type=text]')
     await gussInput.setValue("WRONG")
     await gussInput.trigger('keydown.enter')
@@ -24,8 +29,6 @@ describe('HelloWorld', () => {
   })
 
   test("should not ending message if game is on", async () => {
-    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
-
     expect(wrapper.text()).not.toContain(WIN_MESSAGE)
     expect(wrapper.text()).not.toContain(LOST_MESSAGE)
   })
