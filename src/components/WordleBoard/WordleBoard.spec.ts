@@ -17,11 +17,16 @@ describe('HelloWorld', () => {
     const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
 
     const gussInput = wrapper.find<HTMLInputElement>('input[type=text]')
-    await gussInput.setValue("TESTS")
+    await gussInput.setValue("WRONG")
     await gussInput.trigger('keydown.enter')
 
     expect(wrapper.text()).toContain(LOST_MESSAGE)
   })
 
-  test.todo("should show a wrong answer message if user is incorrect ")
+  test("should not ending message if game is on", async () => {
+    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
+
+    expect(wrapper.text()).not.toContain(WIN_MESSAGE)
+    expect(wrapper.text()).not.toContain(LOST_MESSAGE)
+  })
 })
