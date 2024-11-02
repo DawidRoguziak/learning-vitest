@@ -12,18 +12,20 @@ describe('HelloWorld', () => {
     wrapper = mount(WordleBoard, {props: {wordOfTheDay}})
   })
 
-  it('should show a victory message after user match word of the day', async () => {
+  async function userInput(text: string) {
     const gussInput = wrapper.find<HTMLInputElement>('input[type=text]')
-    await gussInput.setValue("TESTS")
+    await gussInput.setValue(text)
     await gussInput.trigger('keydown.enter')
+  }
+
+  it('should show a victory message after user match word of the day', async () => {
+    await userInput("TESTS");
 
     expect(wrapper.text()).toContain(WIN_MESSAGE)
   });
 
   test("should show a lose message if user is incorrect and is game over", async () => {
-    const gussInput = wrapper.find<HTMLInputElement>('input[type=text]')
-    await gussInput.setValue("WRONG")
-    await gussInput.trigger('keydown.enter')
+    await userInput("WRONG");
 
     expect(wrapper.text()).toContain(LOST_MESSAGE)
   })
