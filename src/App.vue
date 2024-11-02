@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld/HelloWorld.vue'
+import WordleBoard from '@/components/WordleBoard/WordleBoard.vue'
 </script>
 
 <template>
   <div>
-    <HelloWorld msg="Hello World!" />
+    <WordleBoard msg="Hello World!" />
   </div>
 </template>
