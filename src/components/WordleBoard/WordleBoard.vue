@@ -2,9 +2,12 @@
 import { ref} from "vue";
 import {LOST_MESSAGE, WIN_MESSAGE} from "@/constants";
 
-defineProps<{
-  wordOfTheDay: string
-}>();
+defineProps({
+  wordOfTheDay: {
+    type: String,
+    validator: (value: string) => value.length === 5 && value.toUpperCase() === value
+  }
+});
 
 const gussInProgress= ref("");
 const gussSubmitted= ref("");
