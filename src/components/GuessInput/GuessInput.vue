@@ -10,7 +10,7 @@ const gussInProgress = ref<string | null>(null);
 
 const formattedGussInProgress = computed<string>({
   get() {
-   return gussInProgress.value ?? ""
+    return gussInProgress.value ?? ""
   },
   set(value: string) {
     gussInProgress.value = null;
@@ -30,9 +30,33 @@ function onSubmit() {
 
 <template>
   <div>
+    <ul>
+      <li v-for="(letter, index) in formattedGussInProgress.padEnd(WORD_SIZE, '')"
+          :key="`${letter}-${index}`"
+          :data-letter="letter"
+      >
+        {{ letter }}
+      </li>
+    </ul>
     <input type="text"
+           autofocus
+           :maxlength="WORD_SIZE"
+           @blur="({target}) => (target as HTMLInputElement).focus()"
            v-model="formattedGussInProgress"
            @keydown.enter="onSubmit"
     >
   </div>
 </template>
+
+<style scoped>
+input {
+  position: absolute;
+  opacity: 0;
+}
+
+.ul {}
+
+li {
+
+}
+</style>
