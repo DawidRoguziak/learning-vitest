@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {computed, ref, triggerRef} from "vue";
-import {LOST_MESSAGE, WIN_MESSAGE, WORD_SIZE} from "@/constants";
+import {ref} from "vue";
+import {LOST_MESSAGE, WIN_MESSAGE } from "@/constants";
 import GuessInput from "@/components/GuessInput/GuessInput.vue";
 
 defineProps({
@@ -11,8 +11,6 @@ defineProps({
 });
 
 const gussSubmitted = ref("");
-
-
 
 </script>
 

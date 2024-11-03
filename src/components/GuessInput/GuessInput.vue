@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, ref, triggerRef} from "vue";
-import {LOST_MESSAGE, WIN_MESSAGE, WORD_SIZE} from "@/constants";
+import {WORD_SIZE} from "@/constants";
 
 const emit = defineEmits<{
   "guess:update": [guess: string]
