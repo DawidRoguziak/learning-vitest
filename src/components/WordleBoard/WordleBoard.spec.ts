@@ -1,6 +1,6 @@
 import {mount} from '@vue/test-utils'
 import WordleBoard from './WordleBoard.vue'
-import {LOST_MESSAGE, WIN_MESSAGE} from "@/constants";
+import {LOST_MESSAGE, WIN_MESSAGE, WORD_SIZE} from "@/constants";
 import {beforeEach, describe, expect, vi} from "vitest";
 
 describe('WordleBoard', () => {
@@ -58,9 +58,31 @@ describe('WordleBoard', () => {
 
 
     describe("player input", () => {
-        test.todo("player gusses are limited to 5 letters")
-        test.todo("player gusses not case sensitive")
-        test.todo("player gusses has only letters")
+        test(`player gusses are limited to ${WORD_SIZE} letters`, async () => {
+            await userInput(wordOfTheDay + "EXTRA")
+
+
+            expect(wrapper.text()).toContain(WIN_MESSAGE)
+        })
+
+        test("player gusses not case sensitive", async  () => {
+            await userInput(wordOfTheDay.toLowerCase())
+
+            expect(wrapper.text()).toContain(WIN_MESSAGE)
+        })
+
+        test("player gusses has only letters",async() => {
+            await userInput("t4@%r")
+
+            expect(wrapper.find<HTMLInputElement>("input[type=text]").element.value).toEqual("TR")
+        })
+
+        test("non-letter characters do not render on screen while being types", async () => {
+            await userInput("3")
+
+            expect(wrapper.find<HTMLInputElement>("input[type=text]").element.value).toEqual("")
+
+        })
     })
 
 })
