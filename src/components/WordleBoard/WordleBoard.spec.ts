@@ -1,9 +1,9 @@
 import {mount} from '@vue/test-utils'
 import WordleBoard from './WordleBoard.vue'
 import {LOST_MESSAGE, WIN_MESSAGE} from "@/constants";
-import {beforeEach, expect, vi} from "vitest";
+import {beforeEach, describe, expect, vi} from "vitest";
 
-describe('HelloWorld', () => {
+describe('WordleBoard', () => {
     let wrapper: ReturnType<typeof mount>;
     let wordOfTheDay: string;
 
@@ -18,40 +18,49 @@ describe('HelloWorld', () => {
         await gussInput.trigger('keydown.enter')
     }
 
-    it('should show a victory message after user match word of the day', async () => {
-        await userInput("TESTS");
 
-        expect(wrapper.text()).toContain(WIN_MESSAGE)
-    });
+    describe("end of the game", () => {
+        it('should show a victory message after user match word of the day', async () => {
+            await userInput("TESTS");
 
-    test("should show a lose message if user is incorrect and is game over", async () => {
-        await userInput("WRONG");
+            expect(wrapper.text()).toContain(WIN_MESSAGE)
+        });
 
-        expect(wrapper.text()).toContain(LOST_MESSAGE)
+        test("should show a lose message if user is incorrect and is game over", async () => {
+            await userInput("WRONG");
+
+            expect(wrapper.text()).toContain(LOST_MESSAGE)
+        })
+
+        test("should not ending message if game is on", async () => {
+            expect(wrapper.text()).not.toContain(WIN_MESSAGE)
+            expect(wrapper.text()).not.toContain(LOST_MESSAGE)
+        })
     })
 
-    test("should not ending message if game is on", async () => {
-        expect(wrapper.text()).not.toContain(WIN_MESSAGE)
-        expect(wrapper.text()).not.toContain(LOST_MESSAGE)
+    describe("rules of the game", () => {
+
+        test.each([
+            "SPY",
+            "tests",
+        ])("%s should always emit warning if word of the day do not have 5 letters", async (wordOfTheDay) => {
+            // const spy = vi.spyOn(console, 'warn')
+            // // hide warn
+            // spy.mockImplementation(() => null)
+            // or
+            console.warn = vi.fn()
+
+            mount(WordleBoard, {props: {wordOfTheDay}})
+
+            expect(console.warn).toHaveBeenCalled()
+        })
     })
 
-    test("should always emit warning if word of the day do not have 5 letters", async () => {
-        // const spy = vi.spyOn(console, 'warn')
-        // // hide warn
-        // spy.mockImplementation(() => null)
-        // or
-        console.warn = vi.fn()
 
-        mount(WordleBoard, {props: {wordOfTheDay: "SPY"}})
-
-        expect(console.warn).toHaveBeenCalled()
+    describe("player input", () => {
+        test.todo("player gusses are limited to 5 letters")
+        test.todo("player gusses not case sensitive")
+        test.todo("player gusses has only letters")
     })
 
-    test("should emit warning if word of the day is not UPPERCASE", async () => {
-        console.warn = vi.fn()
-
-        mount(WordleBoard, {props: {wordOfTheDay: "tests"}})
-
-        expect(console.warn).toHaveBeenCalled()
-    })
 })
