@@ -41,9 +41,9 @@ describe('WordleBoard', () => {
     describe("rules of the game", () => {
 
         test.each([
-            "SPY",
-            "tests",
-        ])("%s should always emit warning if word of the day do not have 5 letters", async (wordOfTheDay) => {
+            {wordOfTheDay:"SPY", reason: "word-of-the-day must have 5 characters"},
+            {wordOfTheDay:"tests", reason: "word-of-the-day must me br all uppercase"},
+        ])("$wordOfTheDay warning provided reason: $reason", async ({wordOfTheDay, reason}) => {
             // const spy = vi.spyOn(console, 'warn')
             // // hide warn
             // spy.mockImplementation(() => null)
